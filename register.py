@@ -19,7 +19,7 @@ c = conn.cursor()
 c.execute('select * from users where name=?;', (un,))
 all_results = c.fetchall()
 if len(all_results)>0:
-    message = "Sorry, it seems like someone already registered using this username"
+    message = "Sorry, it seems like someone already registered using this username or email"
 else:
     message = "wahoo!"
     c.execute('insert into users values(?, ? ,?, ?);', (un, pw, em, ""))
@@ -35,6 +35,8 @@ print "<head><title>Registration</title></head>"
 print "<body>"
 print "<h1>" +message+"</h1>"
 print "<h2>your username is: " + un + " </h2>"
+print "<a href='../index.html'> Back to Main Page </a>"
+
 print "<pre>"
 
 for row in c.execute('select * from users'):
