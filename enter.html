@@ -1,0 +1,31 @@
+<html>
+<title> Waddle Data Entry </title>
+<h1>Welcome, logged in user ;) <br> Waddle while you wait!</h1>
+<body> 
+	<p>
+		Enter your estimated waiting time:
+	</p>
+	<form method="post" action="cgi-bin/enter-data.py">
+		Where are you: <select name="location">
+		<option value="Starbs">Starbucks</option>
+		<option value="Connections">Connections</option>
+		<option value="PV">Pura Vida</option>
+		</select></br>
+
+		Estimate time waiting: <select name="time"/><br>		
+		<option value="1">1 minute</option>
+		<option value="5">5 minutes</option>
+		<option value="10">10 minutes</option>
+		<option value="15">15 minutes</option>
+		<option value="30">30 minutes</option>
+		<option value="45">45 minutes</option>
+		<option value="60">60 minutes</option>
+		</select></br>
+		<input type="submit"/><input type="reset"/>
+	</form>
+
+
+<img src="penguin.png" alt="Mr. Wadgers" width="300">
+
+</body>
+</html>
