@@ -36,7 +36,7 @@ if cookstring:
         print "<h2>You have the wrong password or username (or you are already logged in as someone else):^(</h2>"
         print "<a href='logout.py'> If logged in as someone else, log out here. </a>"
         print "<p>     </p>"
-        print "<a href='../index.html'> Back to Main Page </a>"
+        print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
 
         print "<pre>"
     else:
@@ -49,7 +49,7 @@ if cookstring:
         print "<h1>Dope. You're already logged in, "+ un +"</h1>"
         print "<a href='logout.py'> Log Out </a>"
         print "<p>     </p>"
-        print "<a href='../index.html'> Back to Main Page </a>"
+        print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
 
 
         print "<h2>Here's a list of some registered users</h2>"
@@ -70,7 +70,7 @@ else:
         print "<body>"
         print "<h1>You're not in.</h1>"
         print "<h2>You have the wrong password or username :^(</h2>"
-        print "<a href='../index.html'> Back to Main Page </a>"
+        print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
 
         print "<pre>"
     else:
@@ -90,7 +90,7 @@ else:
         print "<h1>Nice! It's your first time logging in!</h1>"
         print "<a href='logout.py'> Log Out </a>"
         print "<p>     </p>"
-        print "<a href='../index.html'> Back to Main Page </a>"
+        print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
 
         print "<h2>Here's a list of some registered users</h2>"
         print "<pre>"
