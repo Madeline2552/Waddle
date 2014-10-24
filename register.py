@@ -26,7 +26,6 @@ else:
     conn.commit()
 
 
-#message = "YEEHAW!"
 print "Content-type: text/html"
 print
 
@@ -41,7 +40,8 @@ print "<pre>"
 
 for row in c.execute('select * from users'):
     print 'username: ', row[0], '| email: ', row[2]
-
-print "<pre>"
+    
+c.close()
+print "</pre>"
 print "</body>"
 print "</html>"
