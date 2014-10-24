@@ -34,7 +34,7 @@ print "<head><title>Registration</title></head>"
 print "<body>"
 print "<h1>" +message+"</h1>"
 print "<h2>your username is: " + un + " </h2>"
-print "<a href='../index.html'> Back to Main Page </a>"
+print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
 
 print "<pre>"
 
