@@ -1,10 +1,45 @@
 <html>
+<head>
 <title>Waddle: Don't Dawdle!</title>
+<link rel="stylesheet" href="css/styles.css">
+
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		$("#yescookie").hide();
+		$("#nocookie").hide();
+			$.ajax(
+			{
+				url: "cgi-bin/cookiechecker.py",
+				type: "GET",
+				dataType: "JSON",
+				
+				success: function(dat){
+					console.log(dat.condition);
+					if(dat.condition == true){
+						$("#yescookie").show();
+					} else if(dat.condition==false) {
+						$("#nocookie").show();
+					}
+				},
+		});
+	});
+</script>
+</head>	
+		
+
 <!--<link rel="stylesheet" href="css/styles.css">!-->
 <body>
+<center>
 <p><font size = "20">Waddle</font></p>
 <p><font size = "2" color = "blue"> We are sorry, but this website is currently not up, but be sure to check next semester! </font></p>
-
+<div id="yescookie">
+<center><a href='../view.html'> View Waiting Time</a><br><br>
+<a href='../enter.html'> Input Waiting Time</a><br><br>
+<a href='cgi-bin/logout.py'>Logout</a></center>
+</div>
+<div id="nocookie">
 <h1>LOGIN!!!!</h1>
 <form method="post" action="cgi-bin/login.py">
 username: <input name="u_n" type=text size="30"/><br>
@@ -23,6 +58,7 @@ password: <input type="PASSWORD" name="pw1" size="30"/><br>
 
 <img src="underconstruction.gif" alt="under construction">
 
+</div>
+</center>
 </body>
 </html>
-
