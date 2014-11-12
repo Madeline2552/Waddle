@@ -40,16 +40,16 @@ if cookstring:
 	else:
 
 		print 'Content-Type: text/html'
-		print "Location: http://ztiet.rochestercs.org/enter.html"
+		print "Location: http://ztiet.rochestercs.org/home.html"
 		print # HTTP says you have to have a blank line between headers and content
 		print '<html>'
 		
 		print '<head>'
-		print '<meta http-equiv="refresh" content="0;url= http://ztiet.rochestercs.org/enter.html" />' 
+		print '<meta http-equiv="refresh" content="0;url= http://ztiet.rochestercs.org/home.html" />'
 		print '    <title>You are going to be redirected</title>'
 		print '  </head>' 
 		print '  <body>'
-		print '    Redirecting... <a href="http://ztiet.rochestercs.org/enter.html">Click here if you are not redirected</a>' 
+		print '    Redirecting... <a href="http://ztiet.rochestercs.org/home.html">Click here if you are not redirected</a>'
 		print '  </body>'
 		print '</html>'
 		
