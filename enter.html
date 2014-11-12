@@ -1,18 +1,54 @@
 <html>
+<head>
 <title> Waddle Data Entry </title>
+
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$("#submit").click(function(){
+		console.log("hello world");
+		console.log($("#l").val());
+		console.log($("#t").val());
+		$.ajax(
+			{
+				url: "cgi-bin/enter.py",
+				type: "POST",
+				data:{
+					loc: $("#l").val(),
+					time: $("#t").val()
+					},
+				dataType: "JSON",
+				success: function(data){
+					//$("#output").html(data);
+					
+					$("#output").html("<li>Location: " + data.loc + " |  Estimated Time: " + data.time + " minute(s) | Inputted Time: "+data.inputTime + "</li>");
+				},
+				failure: function(){
+					alert("wtf");
+				},
+			}
+		);			
+	})
+});
+</script>
+</head>
+	
+
+
 <h1>Welcome, logged in user ;) <br> Waddle while you wait!</h1>
 <body> 
 	<p>
 		Enter your estimated waiting time:
 	</p>
-	<form method="post" action="cgi-bin/enter-data.py">
-		Where are you: <select name="location">
-		<option value="Starbs">Starbucks</option>
+	<!-- <form method="post" action="cgi-bin/enter-data.py"> --!>
+		Where are you: <select name="location" id="l">
+		<option value="Starbucks">Starbucks</option>
 		<option value="Connections">Connections</option>
 		<option value="PV">Pura Vida</option>
 		</select></br>
 
-		Estimate time waiting: <select name="time"/><br>		
+		Estimate time waiting: <select name="time" id="t"/><br>		
 		<option value="1">1 minute</option>
 		<option value="5">5 minutes</option>
 		<option value="10">10 minutes</option>
@@ -21,10 +57,11 @@
 		<option value="45">45 minutes</option>
 		<option value="60">60 minutes</option>
 		</select></br>
-		<input type="submit"/><input type="reset"/>
-	</form>
+		<button id="submit">Submit!</button>
+	<!--</form>--!>
+		<div id="output"></div>
 
-
+<br>
 <img src="penguin.png" alt="Mr. Wadgers" width="300">
 
 </body>
