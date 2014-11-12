@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <title> Waddle Data Entry </title>
+        
+        <script src="jquery-1.11.1.min.js"></script>
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+            	$("#yescookie").hide();
+            	$("#nocookie").hide();
+		$("#wcookie").hide();
+            	$("#lo").on('input', function(){
+            	var selectedVal = $("#lo").val();
+            	console.log(selectedVal);
+                $.ajax(
+                {
+                	url: "cgi-bin/view.py",
+                    type: "POST",
+					data: {
+						l: selectedVal
+					},
+					dataType: "text",
+					success: function(data){
+						var content = '';
+						var data = $.parseJSON(data);
+						console.log(data);
+						$.each(data, function(i, post) {
+							content += '<li>Location: ' + post.location + " |  Estimated Time: " + post.waitingTime + " minute(s) | Inputted Time: "+post.inputTime + '</li>';
+						});
+					$("#output").html(content);
+					},
+				});                      
+            	})
+            	$.ajax(
+				{
+					url: "cgi-bin/cookiechecker.py",
+					type: "GET",
+					dataType: "JSON",
+                                                 
+					success: function(dat){
+					console.log(dat.condition);
+					if(dat.condition == true){
+						console.log("yes cookie");
+ 						$("#yescookie").show();
+ 					} else if(dat.condition == false && dat.noCookie == true) {
+ 						console.log("no cookie");
+						$("#nocookie").show();
+					}
+					else if(dat.condition == false && dat.noCookie ==false){
+						console.log("wrong cookie");
+						$("#wcookie").show();
+					}},
+				});
+			});
+            </script>
+    </head>
+
+	 <div id="wcookie">
+        <center>
+	You have a wrong cookie, click here to delete it!
+	<a href="http://ztiet.rochestercs.org/cgi-bin/logout.py">waddle waddle!</a></center>
+    </div>
+
+    
+    <div id="nocookie">
+    	<center><a href="http://ztiet.rochestercs.org">Click here to log in/register!</a></center>
+    </div>
+    
+    <div id="yescookie">
+    <h1>VIEW YOUR TIMES!!!!!!! <br> Waddle while you wait!</h1>
+    <body> 
+        <p>
+		Pick a location to view estimated waiting time: 
+        </p>
+		Where are you: <select name="location" id="lo">
+            <option> Pick your location</option>
+            <option value="Starbucks">Starbucks</option>
+            <option value="Connections">Connections</option>
+            <option value="PV">Pura Vida</option>
+		</select></br>
+        
+		<div id="output"></div>
+        
+        <br>
+        <img src="penguin.png" alt="Mr. Wadgers" width="300">
+    </div>
+    </body>
+</html>
