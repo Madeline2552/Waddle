@@ -12,11 +12,13 @@ cgitb.enable()
 
 form = cgi.FieldStorage()
 loc = form['l'].value
+past = form['past'].value
+future = form['future'].value
 
 conn = sqlite3.connect('time.db')
 
 cursor = conn.cursor()
-cursor.execute("select * from timeData where location is ?;", (loc,))
+cursor.execute("select * from timeData where location is ? and unix between ? and ?;", (loc, past, future,))
 rows = [x for x in cursor]
 cols = [x[0] for x in cursor.description]
 info = []
