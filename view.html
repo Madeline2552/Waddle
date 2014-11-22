@@ -1,33 +1,68 @@
 <html>
+
+<!-- 
+TODO
+-average out the times
+-fix display cos it;s gugly
+-add a counter for how many things we have in the database
+-implement the planning ahead the average time from already collected data
+ -->
     <head>
         <title> Waddle Data Entry </title>
         
         <script src="jquery-1.11.1.min.js"></script>
+        <script src="http://momentjs.com/downloads/moment.js"></script>
         <script type="text/javascript">
+        
+        
+				/*var now = moment();
+				var test = moment.unix(1218781876);
+				$("#currentime").append(test);
+				$("#currentime").html("<br>");
 
+				$("#currentime").html(now);
+				$("#currentime").html("<br>");
+				var past = moment().subtract(15, 'minutes');
+				var future = moment().add(15, 'minutes');
+				$("#currentime").html("<br><b>last 15 minutes:</b> ");
+				$("#currentime").html(past);
+				$("#currentime").html( "<br> <b>next 15 minutes: </b>");
+				$("#currentime").html(future);
+				*/
             $(document).ready(function(){
             	$("#yescookie").hide();
             	$("#nocookie").hide();
-		$("#wcookie").hide();
+				$("#wcookie").hide();
+				
+				
             	$("#lo").on('input', function(){
             	var selectedVal = $("#lo").val();
-            	console.log(selectedVal);
+
                 $.ajax(
                 {
                 	url: "cgi-bin/view.py",
                     type: "POST",
 					data: {
-						l: selectedVal
+						l: selectedVal,
+ 						past: getPastTime(),
+ 						future: getFutureTime(),
+						dayOfWeek: getCurrentDay(),
+											
 					},
 					dataType: "text",
 					success: function(data){
 						var content = '';
 						var data = $.parseJSON(data);
+						var sum = 0;
+						var count = 0;
 						console.log(data);
 						$.each(data, function(i, post) {
+							sum += post.waitingTime;
+							count+=1;
 							content += '<li>Location: ' + post.location + " |  Estimated Time: " + post.waitingTime + " minute(s) | Inputted Time: "+post.inputTime + '</li>';
 						});
 					$("#output").html(content);
+					$("#resultTime").html('<p> Your Average waiting time is: '+ Math.round(sum/count)+' min(s) </p>');
 					},
 				});                      
             	})
@@ -52,6 +87,31 @@
 					}},
 				});
 			});
+			
+			document.write(getPastTime());
+			
+			
+			function getCurrentTime(){
+			
+				var currentTime = moment().format("HH:mm:ss");
+				return currentTime;
+			
+			}
+			
+			function getPastTime(){
+				var past = moment().subtract(15, 'minutes').format("HH:mm");
+				return past;
+        	}
+        	function getFutureTime(){
+				var future = moment().add(15, 'minutes').format("HH:mm");
+				return future;
+        	}
+        	function getCurrentDay(){
+        		var day = moment().day();
+        		var daysArray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri","Sat","Sun"];
+        		return daysArray[day];
+        	}
+        
             </script>
     </head>
 
@@ -67,7 +127,16 @@
     </div>
     
     <div id="yescookie">
-    <h1>VIEW YOUR TIMES!!!!!!! <br> Waddle while you wait!</h1>
+    <h1>VIEW YOUR TIMES!!!!!!!</h1> <br>
+    <label><font size ="5">Waddle while you wait!</font></label>
+    <img id="waddlePenguin" src="http://cr4.globalspec.com/PostImages/200807/penguin_waddling6_ani_2F04476C-CDE0-59CE-4A78E4FFAA0DC37C.gif" alt="waddling">
+	<br>
+	<br>
+    <a href="http://ztiet.rochestercs.org">Back to the main page</a>
+    
+    <div id="currentime">
+    </div>
+    
     <body> 
         <p>
 		Pick a location to view estimated waiting time: 
@@ -80,9 +149,9 @@
 		</select></br>
         
 		<div id="output"></div>
+		<div id="resultTime"></div>
         
         <br>
-        <img src="penguin.png" alt="Mr. Wadgers" width="300">
     </div>
     </body>
 </html>
