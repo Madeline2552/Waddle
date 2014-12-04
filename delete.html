@@ -1,0 +1,84 @@
+<!--makesure we have a cookie when on this page -->
+
+<html>
+	<head> 
+		<center>
+			<p>
+			<font size = 24 color = "red">
+
+				ATTENTION 
+			</font>
+			</p>
+		</center>
+ <script src="jquery-1.11.1.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+            	$("#yescookie").hide();
+            	$("#nocookie").hide();
+		$("#wcookie").hide();
+				
+				
+            	$.ajax(
+				{
+					url: "cgi-bin/cookiechecker.py",
+					type: "GET",
+					dataType: "JSON",
+                                                 
+					success: function(dat){
+					console.log(dat.condition);
+					if(dat.condition == true){
+						console.log("yes cookie");
+ 						$("#yescookie").show();
+ 					} else if(dat.condition == false && dat.noCookie == true) {
+ 						console.log("no cookie");
+						$("#nocookie").show();
+					}
+					else if(dat.condition == false && dat.noCookie ==false){
+						console.log("wrong cookie");
+						$("#wcookie").show();
+					}},
+				});
+			});
+</script>
+	</head>
+	<div id="wcookie">
+        	<center>
+			You have a wrong cookie, click here to delete it!
+			<a href="http://ztiet.rochestercs.org/cgi-bin/logout.py">waddle waddle!</a></center>
+	</div>
+
+    
+	<div id="nocookie">
+    		<center><a href="http://ztiet.rochestercs.org">Click here to log in/register!</a></center>
+	</div>
+	<div id="yescookie">
+		<body>
+			<center>
+				<p>
+				<font size = 5 color = "black">
+					You will be permanently deleting your account, if you 
+					do not wish to do this, go 
+					<a href="index.html">
+						back to main page
+					</a>
+				</font>
+				</p>
+
+				<p>
+					<form method="post" action="cgi-bin/delete.py">
+						Password:
+							<input name="u_n" type="text" size="30">
+						<br><br>
+						Confirm Password:
+							<input name="p_w" size="30">
+						<br><br>
+						<button name="submit" id="submit" type="submit" value="submit">
+							Delete My Account!
+						</button>
+					</form>
+				</p>
+			</center>
+
+		</body>
+	</div>
+</html>
