@@ -1,11 +1,14 @@
 <html>
 <head>
 <title> Waddle Data Entry </title>
-
+<link rel="stylesheet" href="css/styles.css">
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
+    $("#yescookie").hide();
+    $("#nocookie").hide();
+	$("#wcookie").hide();
 	$("#submit").click(function(){
 		console.log("hello world");
 		console.log($("#l").val());
@@ -28,24 +31,82 @@ $(document).ready(function() {
 					alert("wtf");
 				},
 			}
-		);			
+		);	
+		
+		$.ajax(
+			{
+				url: "cgi-bin/count.py",
+				type: "POST",
+				data:{
+					loc: $("#l").val()
+					},
+					
+				dataType:"text",
+				success: function(data){
+					console.log("YAHOO");
+					$("#toTest").html(data);
+					
+					
+				},
+				failure: function(){
+					alert("wtf");
+				},
+			}
+		);		
+			
+
 	})
+			$.ajax(
+			{
+				url: "cgi-bin/cookiechecker.py",
+				type: "GET",
+				dataType: "JSON",
+                                                 
+				success: function(dat){
+				console.log(dat.condition);
+				if(dat.condition == true){
+					console.log("yes cookie");
+ 					$("#yescookie").show();
+ 				} else if(dat.condition == false && dat.noCookie == true) {
+ 					console.log("no cookie");
+					$("#nocookie").show();
+				}
+				else if(dat.condition == false && dat.noCookie ==false){
+					console.log("wrong cookie");
+					$("#wcookie").show();
+				}},
+			});	
 });
 </script>
 </head>
 	
+	
+	<div id="wcookie">
+    <center>
+	You have a wrong cookie, click here to delete it!
+	<a href="http://ztiet.rochestercs.org/cgi-bin/logout.py">waddle waddle!</a></center>
+    </div>
 
+    
+    <div id="nocookie">
+    	<center><a href="http://ztiet.rochestercs.org">Click here to log in/register!</a></center>
+    </div>
+    
 
+<div id="yescookie">
 <h1>Welcome, logged in user ;) <br> Waddle while you wait!</h1>
 <body> 
 	<a href="http://ztiet.rochestercs.org">Back to the main page</a>
 	<p>
 		Enter your estimated waiting time:
 	</p>
+	<!-- <form method="post" action="cgi-bin/enter-data.py"> --!>
 		Where are you: <select name="location" id="l">
 		<option value="Starbucks">Starbucks</option>
 		<option value="Connections">Connections</option>
 		<option value="PV">Pura Vida</option>
+		<option value="Postoffice">Post Office</option>
+		<option value="Chipotle">Chipotle</option>
 		</select></br>
 
 		Estimate time waiting: <select name="time" id="t"/><br>		
@@ -53,15 +114,19 @@ $(document).ready(function() {
 		<option value="5">5 minutes</option>
 		<option value="10">10 minutes</option>
 		<option value="15">15 minutes</option>
+		<option value="20">20 minutes</option>
+		<option value="25">25 minutes</option>
 		<option value="30">30 minutes</option>
 		<option value="45">45 minutes</option>
 		<option value="60">60 minutes</option>
 		</select></br>
 		<button id="submit">Submit!</button>
 		<div id="output"></div>
+		<div id="toTest"></div>
 
 <br>
-<img src="penguin.png" alt="Mr. Wadgers" width="300">
 
 </body>
+</div>
+
 </html>
