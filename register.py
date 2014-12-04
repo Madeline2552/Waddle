@@ -22,7 +22,7 @@ if len(all_results)>0:
     message = "Sorry, it seems like someone already registered using this username or email"
 else:
     message = "wahoo!"
-    c.execute('insert into users values(?, ? ,?, ?);', (un, pw, em, ""))
+    c.execute('insert into users values(?, ? ,?, ?, ?, ?, ?,?,?);', (un, pw, em, "", 0,0,0,0,0))
     conn.commit()
 
 
@@ -32,7 +32,10 @@ print
 print "<html>"
 print "<head><title>Registration</title></head>"
 print "<body>"
-print "<h1>" +message+"</h1>"
+print "<h1>" + message  +"</h1>"
+print "<h3>  "
+print ([str(item) for item in all_results])
+print "</h3>"
 print "<h2>your username is: " + un + " </h2>"
 print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
 
