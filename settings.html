@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <title>Update user settings </title>
+        
+        <script src="jquery-1.11.1.min.js"></script>
+        <script type="text/javascript">
+        
+            $(document).ready(function(){
+            	$("#yescookie").hide();
+            	$("#nocookie").hide();
+				$("#wcookie").hide();
+				$("#message").hide();
+				
+				
+            	$("#submit").click(function(){
+					console.log("clicked");
+				if($("#n1").val() == $("#n2").val()){
+               		$.ajax(
+                	{
+                		url: "cgi-bin/settings.py",
+                    	type: "POST",
+						data: {
+							oldpass: $("#o1").val(),
+ 							newpass1: $("#n1").val()
+						},
+						dataType: "JSON",
+						success: function(data){
+							if(data.condition == true){
+								$("#message").show();
+								$("#message").append("<center>Password changed!</center>");
+								$("#yescookie").hide();
+							
+							}else{
+								$("#message").show();
+								$("#message").append("<center>Password failure!</center>");
+								$("#yescookie").hide();
+							}
+						
+						},
+						error: function(data){
+							console.log("ya failed");
+						
+						},
+					});
+				} else {
+					alert("YOUR NEW PASSWORDS DON'T MATCH!!!!!!!!!!!!!!");				
+				}                    
+            	})
+            	$.ajax(
+				{
+					url: "cgi-bin/cookiechecker.py",
+					type: "GET",
+					dataType: "JSON",
+                                                 
+					success: function(dat){
+					console.log(dat.condition);
+					if(dat.condition == true){
+						console.log("yes cookie");
+ 						$("#yescookie").show();
+ 					} else if(dat.condition == false && dat.noCookie == true) {
+ 						console.log("no cookie");
+						$("#nocookie").show();
+					}
+					else if(dat.condition == false && dat.noCookie ==false){
+						console.log("wrong cookie");
+						$("#wcookie").show();
+					}},
+				});
+			});
+
+            </script>
+    </head>
+
+	 <div id="wcookie">
+        <center>
+	You have a wrong cookie, click here to delete it!
+	<a href="http://ztiet.rochestercs.org/cgi-bin/logout.py">waddle waddle!</a></center>
+    </div>
+
+    
+    <div id="nocookie">
+    	<center><a href="http://ztiet.rochestercs.org">Click here to log in/register!</a></center>
+    </div>
+     <div id="message">
+    <center><a href="http://ztiet.rochestercs.org">Back to the main page</a></center>
+    </div>
+    
+    <div id="yescookie">
+    <h1>Update your settings!</h1> <br>
+    <img id="waddlePenguin" src="http://cr4.globalspec.com/PostImages/200807/penguin_waddling6_ani_2F04476C-CDE0-59CE-4A78E4FFAA0DC37C.gif" alt="waddling">
+	<br>
+	<br>
+    <a href="http://ztiet.rochestercs.org">Back to the main page</a>
+
+    
+    <body> 
+        <p>
+		<b>Change your info: </b>
+        </p>
+		Old Password: <input id="o1" class="indexText" name="oldpass" type="PASSWORD" size="30"/><br>
+		New Password: <input id="n1" class="indexText" type="PASSWORD" name="newpass1" size="30" /><br>
+        Confirm new password: <input id="n2" class="indexText" name="newpass2" type="PASSWORD" size="30"/><br>
+        <button id="submit">Submit</button>
+        <br>
+    </div>
+    </body>
+</html>
