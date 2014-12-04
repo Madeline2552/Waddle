@@ -7,11 +7,11 @@ import Cookie
 import os
 import uuid
 
-cgitb.enable()
 
 form = cgi.FieldStorage()
 un = form['u_n'].value
 pw = form['p_w'].value
+
 
 conn = sqlite3.connect('accounts.db')
 c = conn.cursor()
@@ -39,22 +39,25 @@ if cookstring:
         print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
 
         print "<pre>"
+
+       
     else:
         print "Content-type: text/html"
         print
         
         print "<html>"
         print "<head><title>You're already in!</title></head>"
-        print "<body>"
-        print "<h1>Dope. You're already logged in, "+ un +"</h1>"
+        print "<body><center>"
+        print "<h1>You're already logged in, "+ un +"</h1>"
         print "<a href='logout.py'> Log Out </a>"
         print "<p>     </p>"
-        print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
-
-
+        print "<a href='../view.html'> View Waiting Time</a><br><br>"
+        print "<a href='../enter.html'> Input Waiting Time </a>"
         print "<h2>Here's a list of some registered users</h2>"
         print "<pre>"
+        
 
+        
     for row in c.execute('select * from users'):
         print 'username: ', row[0], '| email: ', row[2], '| cookie?: ', row[3]
 
@@ -85,19 +88,22 @@ else:
         print
     
         print "<html>"
-        print "<head><title>It's your first time logging in!</title></head>"
-        print "<body>"
+        print "<head><title><center>It's your first time logging in!</center></title></head>"
+        print "<body><center>"
         print "<h1>Nice! It's your first time logging in!</h1>"
         print "<a href='logout.py'> Log Out </a>"
         print "<p>     </p>"
-        print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
-
+        print "<a href='../view.html'> View Waiting Time</a><br><br>"
+        print "<a href='../enter.html'> Input Waiting Time </a>"
         print "<h2>Here's a list of some registered users</h2>"
         print "<pre>"
+      
 
+
+        
         for row in c.execute('select * from users'):
             print 'username: ', row[0], '| email: ', row[2], '| cookie?: ', row[3]
         
-print "</pre>"
+print "</pre></center>"
 print "</body>"
 print "</html>"
