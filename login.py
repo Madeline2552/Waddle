@@ -88,22 +88,22 @@ else:
         print
     
         print "<html>"
-        print "<head><title><center>It's your first time logging in!</center></title></head>"
+        print "<head><title>WaddlIN! (Get it?!)</title></head>"
         print "<body><center>"
         print "<h1>Nice! It's your first time logging in!</h1>"
         print "<a href='logout.py'> Log Out </a>"
         print "<p>     </p>"
         print "<a href='../view.html'> View Waiting Time</a><br><br>"
         print "<a href='../enter.html'> Input Waiting Time </a>"
-        print "<h2>Here's a list of some registered users</h2>"
-        print "<pre>"
+       # print "<h2>Here's a list of some registered users</h2>"
+       # print "<pre>"
       
 
 
         
-        for row in c.execute('select * from users'):
-            print 'username: ', row[0], '| email: ', row[2], '| cookie?: ', row[3]
+      #  for row in c.execute('select * from users'):
+       #     print 'username: ', row[0], '| email: ', row[2], '| cookie?: ', row[3]
         
-print "</pre></center>"
+#print "</pre></center>"
 print "</body>"
 print "</html>"
