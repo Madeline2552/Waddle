@@ -7,8 +7,6 @@ import os
 import uuid
 import time
 
-
-
 cgitb.enable()
 conn = sqlite3.connect('accounts.db')
 c = conn.cursor()
@@ -41,7 +39,7 @@ if pw1==pw2 and (len(rightPassword)>0):
 
 	print"<html>"
 	print"<head><title> "
-	print "We are sorry to see you go!</title></head>"
+	print "Waddling Away!</title></head>"
 	print"<body>"
 	print"<h1> <center>We are sorry to see you go,"
 	print name + "!"
