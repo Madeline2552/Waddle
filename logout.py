@@ -26,9 +26,9 @@ print my_cookie
 print 
 
 print"<html>"
-print"<head><title> Log Out</title></head>"
+print"<head><title> Waddling Out!</title></head>"
 print"<body>"
 print"<h1> You are now logged out. Thank you for visiting.</h1>"
-print "<a href='../cgi-bin/home.py'> Back to Main Page </a>"
+print "<a href='../index.html'> Back to Main Page </a>"
 print"</body>"
 print"</html>"
