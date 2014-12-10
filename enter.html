@@ -1,14 +1,23 @@
 <html>
 <head>
-<title> Waddle Data Entry </title>
+<title> Waddle While You Wait! </title>
 <link rel="stylesheet" href="css/styles.css">
+
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.css">
+<script src="js/bootstrap.js"></script>
+
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
+
 
 $(document).ready(function() {
     $("#yescookie").hide();
     $("#nocookie").hide();
 	$("#wcookie").hide();
+	$("#timetable").hide();
+	$("#redeem").hide();
 	$("#submit").click(function(){
 		console.log("hello world");
 		console.log($("#l").val());
@@ -23,9 +32,8 @@ $(document).ready(function() {
 					},
 				dataType: "JSON",
 				success: function(data){
-					//$("#output").html(data);
-					
-					$("#output").html("<li>Location: " + data.loc + " |  Estimated Time: " + data.time + " minute(s) | Inputted Time: "+data.inputTime + "</li>");
+					$("#timetable").show();
+					$("#output").html("<td>"+data.loc+"</td><td>"+data.time+" minute(s)</td><td>"+data.inputTime + "</td>");
 				},
 				failure: function(){
 					alert("wtf");
@@ -44,8 +52,10 @@ $(document).ready(function() {
 				dataType:"text",
 				success: function(data){
 					console.log("YAHOO");
-					$("#toTest").html(data);
-					
+					$("#toTest").html("<p># of times you gave us data for this location: "+data+"</p>");
+					if(data>=30){
+						$("#redeem").show();
+					}
 					
 				},
 				failure: function(){
@@ -76,7 +86,12 @@ $(document).ready(function() {
 					$("#wcookie").show();
 				}},
 			});	
+			
+			
+
 });
+
+
 </script>
 </head>
 	
@@ -94,22 +109,66 @@ $(document).ready(function() {
     
 
 <div id="yescookie">
-<h1>Welcome, logged in user ;) <br> Waddle while you wait!</h1>
+ <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index.html">Waddle</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/view.html">View Waiting Time</a>
+                    </li>
+                    <li>
+                        <a href="#">Enter Waiting Time</a>
+                    </li>
+                    <li>
+                        <a href="/settings.html">Settings</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                	<li>
+                    	<a href="/cgi-bin/logout.py"><span class="glyphicon glyphicon-log-in"></span> Logout</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <div class="row">
+<div class="container">
+<div class="jumbotron">
+<h1 style="font-size:34px; text-align:left;">Waddle while you wait!</h1>
 <body> 
-	<a href="http://ztiet.rochestercs.org">Back to the main page</a>
+	<div id="redeem"class="alert alert-success" role="alert">Thank You for your support! You have entered over 30 times! Redeem your free coffee with code <strong>WADDLE30</strong></div>
+
 	<p>
 		Enter your estimated waiting time:
 	</p>
-	<!-- <form method="post" action="cgi-bin/enter-data.py"> --!>
-		Where are you: <select name="location" id="l">
+		
+
+	<form class="form-inline">
+		Where are you: 
+		<select class= "form-control " name="location" id="l">
 		<option value="Starbucks">Starbucks</option>
 		<option value="Connections">Connections</option>
 		<option value="PV">Pura Vida</option>
 		<option value="Postoffice">Post Office</option>
 		<option value="Chipotle">Chipotle</option>
-		</select></br>
-
-		Estimate time waiting: <select name="time" id="t"/><br>		
+		</select>
+		<br>
+		<br>
+		Estimate time waiting: <select class="form-control" name="time" id="t"/><br>		
 		<option value="1">1 minute</option>
 		<option value="5">5 minutes</option>
 		<option value="10">10 minutes</option>
@@ -119,10 +178,32 @@ $(document).ready(function() {
 		<option value="30">30 minutes</option>
 		<option value="45">45 minutes</option>
 		<option value="60">60 minutes</option>
-		</select></br>
-		<button id="submit">Submit!</button>
-		<div id="output"></div>
+		</select>
+	</br><br>
+</form>
+		<button id="submit" class="btn btn-primary">Submit!</button>
+
+		<div id="timetable" class="table-responsive">
+		<br><br><p>Success! Here's the input you gave us:</p>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Location</th>
+					<th>Estimated Time</th>
+					<th>Time When Inputted</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="output">
+				</tr>
+			</tbody>
+		</table>
+		</div>
 		<div id="toTest"></div>
+
+</div>
+</div>
+</div>
 
 <br>
 
