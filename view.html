@@ -1,68 +1,148 @@
 <html>
-<head>
-<title>Waddle: Don't Dawdle!</title>
+
+<!-- 
+TODO
+-average out the times
+-fix display cos it;s gugly
+-add a counter for how many things we have in the database
+-implement the planning ahead the average time from already collected data
+ -->
+    <head>
+        <title> Waddle Data Entry </title>
         <link rel="stylesheet" href="css/bootstrap.css">
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/bootstrap-theme.css">
 		<link rel="stylesheet" href="css/custom.css">
 		<script src="js/bootstrap.js"></script>
         <script src="jquery-1.11.1.min.js"></script>
-<link rel="stylesheet" href="css/styles.css">
-<script src="js/blur.js"></script>
-<script type="text/javascript">
-	
-	$(document).ready(function(){
-	var images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg'];
-	$('body').css({'background-image': 'url(img/' + images[Math.floor(Math.random() * images.length)] + ')'});
-	
-		$("#yescookie").hide();
-		$("#nocookie").hide();
-		
-			$.ajax(
-			{
-				url: "cgi-bin/cookiechecker.py",
-				type: "GET",
-				dataType: "JSON",
+        <script src="http://momentjs.com/downloads/moment.js"></script>
+        <script type="text/javascript">
+        
+        
+				/*var now = moment();
+				var test = moment.unix(1218781876);
+				$("#currentime").append(test);
+				$("#currentime").html("<br>");
+
+				$("#currentime").html(now);
+				$("#currentime").html("<br>");
+				var past = moment().subtract(15, 'minutes');
+				var future = moment().add(15, 'minutes');
+				$("#currentime").html("<br><b>last 15 minutes:</b> ");
+				$("#currentime").html(past);
+				$("#currentime").html( "<br> <b>next 15 minutes: </b>");
+				$("#currentime").html(future);
+				*/
+            $(document).ready(function(){
+            	$("#yescookie").hide();
+            	$("#nocookie").hide();
+				$("#wcookie").hide();
+				$("#timetable").hide();
+				$("#resultTime").hide();
+
 				
-				success: function(dat){
+            	$("#lo").on('input', function(){
+            	var selectedVal = $("#lo").val();
+
+                $.ajax(
+                {
+                	url: "cgi-bin/view.py",
+                    type: "POST",
+					data: {
+						l: selectedVal,
+ 						past: getPastTime(),
+ 						future: getFutureTime(),
+						dayOfWeek: getCurrentDay(),
+											
+					},
+					dataType: "text",
+					success: function(data){
+						$("#timetable").show();
+						var content = '';
+						var data = $.parseJSON(data);
+						var sum = 0;
+						var count = 0;
+						console.log(data);
+						$.each(data, function(i, post) {
+							sum += post.waitingTime;
+							count+=1;
+							content += '<tr><td>' + post.location + "</td><td>" + post.waitingTime +" min(s)</td><td>"+post.inputTime + '</td></tr>';
+						});
+					
+							$("#output").html(content);
+							$("#resultTime").html('<p> Your Average waiting time is: <strong>'+ Math.round(sum/count)+' min(s) </strong> </p>');
+							//if(currentime.isAfter("23:00:00") && currentime.isBefore("07:00:00")){
+							$("#resultTime").show();
+							//}
+						
+						
+					},
+
+				});                      
+            	})
+            	$.ajax(
+				{
+					url: "cgi-bin/cookiechecker.py",
+					type: "GET",
+					dataType: "JSON",
+                                                 
+					success: function(dat){
 					console.log(dat.condition);
 					if(dat.condition == true){
-						$("#yescookie").fadeIn(800,function(){
-							$("#yescookie").show();
-
-						});
-					} else if(dat.condition==false) {
-						$("#nocookie").fadeIn(800,function(){
-							$("#nocookie").show();
-						});
+						console.log("yes cookie");
+ 						$("#yescookie").show();
+ 					} else if(dat.condition == false && dat.noCookie == true) {
+ 						console.log("no cookie");
+						$("#nocookie").show();
 					}
-				},
-		});
-	});
-</script>
-</head>	
-		
+					else if(dat.condition == false && dat.noCookie ==false){
+						console.log("wrong cookie");
+						$("#wcookie").show();
+					}},
+				});
+			});
+			
+			document.write(getPastTime());
+			
 
-<!--<link rel="stylesheet" href="css/styles.css">!-->
-<body>
+			function getCurrentTime(){
+			
+				var currentTime = moment().format("HH:mm:ss");
+				return currentTime;
+			
+			}
+			
+			function getPastTime(){
+				var past = moment().subtract(15, 'minutes').format("HH:mm");
+				return past;
+        	}
+        	function getFutureTime(){
+				var future = moment().add(15, 'minutes').format("HH:mm");
+				return future;
+        	}
+        	function getCurrentDay(){
+        		var day = moment().day();
+        		var daysArray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri","Sat","Sun"];
+        		return daysArray[day];
+        	}
+        
+            </script>
+    </head>
 
-<script> 
+	 <div id="wcookie">
+        <center>
+	You have a wrong cookie, click here to delete it!
+	<a href="http://ztiet.rochestercs.org/cgi-bin/logout.py">waddle waddle!</a></center>
+    </div>
 
-	</script>
-
-<center>
-
-	
-	
-<div class= "transparentbox" >
-</div>
-<div class ="box">
-	<br>
-	<img id="logo" src="waddle.png" alt="logo" style="max-width: 60%; max-height:50%"/>
-
-
-<div id="yescookie">
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    
+    <div id="nocookie">
+    	<center><a href="http://ztiet.rochestercs.org">Click here to log in/register!</a></center>
+    </div>
+    
+    <div id="yescookie">
+     <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -72,24 +152,24 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/index.html">Waddle</a>
+                <a class="navbar-brand" href="/index.html"><img style="max-width:130px; margin-top:-13px;" src="img/waddle-navbar.png"> </a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="/view.html">View Waiting Time</a>
+                        <a href="#"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Waiting Time</a>
                     </li>
                     <li>
-                        <a href="/enter.html">Enter Waiting Time</a>
+                        <a href="/enter.html"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Enter Waiting Time</a>
                     </li>
                     <li>
-                        <a href="#">Settings</a>
+                        <a href="/settings.html"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                 	<li>
-                    	<a href="/cgi-bin/logout.py"><span class="glyphicon glyphicon-log-in"></span> Logout</a>
+                    	<a href="/cgi-bin/logout.py"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Logout</a>
                     </li>
                 </ul>
             </div>
@@ -97,72 +177,56 @@
         </div>
         <!-- /.container -->
     </nav>
-	<center>
-		<button class="ybtn" onclick="location.href = '../view.html';"> View Waiting Time</a></button>
-			<br><br>
-		<button class="ybtn" onclick="location.href = '../enter.html';"> Input Waiting Time</a></button>
-			<br><br>
-		<button class="ybtn" onclick="location.href = '../settings.html';"> Settings</a></button>
-			<br><br>
-	<a href='cgi-bin/logout.py'>Logout</a></center>
-	</div>
-<div id="nocookie">
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/index.html">Waddle</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-    <div id="content">
-	<ul class="nav nav-tabs">
-            <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
-            <li><a href="#register" data-toggle="tab">Register</a></li>
-            <li><a href="#tab03" data-toggle="tab">Post Auto-commenter</a></li>
-        </ul>
-        <div class="tab-content tab">
-            <div class="tab-pane fade in active" id="login">
-                <br><form method="post" action="cgi-bin/login.py">
-				Username: <input class="indexText" name="u_n" type=text size="30"/><br>
-				<br>
-				Password: <input class="indexText" type="PASSWORD" name="p_w" size="30" /><br>
-				<br>
-				<button class="btn" name="submit" id="submit" type="submit" value="submit">Submit</button>
-				<button class="btn" name="reset" id="reset" type="reset" value="reset">Reset</button>
-				</form>
-            </div>
-            <div class="tab-pane fade" id="register">
-                <form method="post" action="cgi-bin/register.py">
-				email: <input class="indexText" name="em1" type=text size="30"/><br>
-				<br>
-				username: <input class="indexText" name="un1" type=text size="30"/><br>
-				<br>
-				password: <input class="indexText" type="PASSWORD" name="pw1" size="30"/><br>
-				<br>
-				<button class="btn" name="submit" id="submit" type="submit" value="submit">Submit</button>
-				<button class="btn" name="reset" id="reset" type="reset" value="reset">Reset</button>
-				</form>
-            </div>
-            <div class="tab-pane fade" id="tab03">
-                <h4>Post Auto-commenter <small>this is for auto-commenting on post. Will work on posts, photos, and videos. ;)</small></h4>
-                <hr />
-            </div>
-        </div>
-        </div>
+    <div class="row">
+<div class="container">
+<div class="jumbotron">
+    <h2>View your waiting time</h2> <br>
+    <label><font size ="5">Waddle while you wait!</font></label><br>
+	<br>
+	<br>
+    
+    <div id="currentime">
+    </div>
+    
+    <body> 
+        <p>
+		Pick a location to view estimated waiting time: 
+        </p>
+        <div id="resultTime" class="alert alert-warning" role="alert"></div>
 
+		Where are you: <select name="location" class="form-control" id="lo">
+            <option> Pick your location</option>
+            <option value="Starbucks">Starbucks</option>
+            <option value="Connections">Connections</option>
+            <option value="PV">Pura Vida</option>
+            <option value="Postoffice">Post Office</option>
+            <option value="Chipotle">Chipotle</option>
+		</select></br>
+        
+		<div id="timetable" class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Location</th>
+					<th>Estimated Time</th>
+					<th>Time When Inputted</th>
+				</tr>
+			</thead>
+			<tbody id="output">
+			</tbody>
+		</table>
+		</div>
+        
+        <br>
+    </div>
+    </div>
+    </div>
+    <div id="footer" class="container" >
+    <nav class="navbar navbar-default navbar-fixed-bottom" >
+        <div class="navbar-inner navbar-content-center" style="height:20px;" >
+            <p class="text-muted credit" style="margin-left:10px; margin-bottom:10px;;">&copy; 2014 - A Project by <a href="#">Maddy, </a><a href="#">Zoe, </a>  and <a href="Lukas">Lukas</a>.</p>
+        </div>
+    </nav>
 </div>
-</center>
-</body>
+    </body>
 </html>
