@@ -89,12 +89,9 @@ else:
     
         print "<html>"
         print "<head><title>WaddlIN! (Get it?!)</title></head>"
+        print "<meta http-equiv='refresh' content='0; url=../index.html'/>"
         print "<body><center>"
-        print "<h1>Nice! It's your first time logging in!</h1>"
-        print "<a href='logout.py'> Log Out </a>"
-        print "<p>     </p>"
-        print "<a href='../view.html'> View Waiting Time</a><br><br>"
-        print "<a href='../enter.html'> Input Waiting Time </a>"
+        print "Redirecting... <a href='../index.html'>Click here if you are not redirected</a>"
        # print "<h2>Here's a list of some registered users</h2>"
        # print "<pre>"
       
